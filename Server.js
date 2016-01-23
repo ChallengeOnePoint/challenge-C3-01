@@ -35,47 +35,47 @@ module.exports = class Server {
     }
 
     setServer() {
-        server = require('http').createServer(this.app);  
-        io = require('socket.io')(server);
-        server.listen(4200); 
+        server = require( 'http' ).createServer( this.app );
+        io = require( 'socket.io' )( server );
+        server.listen( 4200 );
     }
 
     socket() {
 
-        io.on('connection', function(client) {  
-            console.log('Client connected...');
+        io.on( 'connection', function( client ) {
+            console.log( 'Client connected...' );
 
             var post_counter = 2;
 
             var posts = {
-                0: { 
+                0: {
                     lock: false,
                     title: "test",
-                    data: "hello kelu"
+                    description: "hello kelu"
                 },
-                1: { 
+                1: {
                     lock: false,
                     title: "test2",
-                    data: "hello Damien"
+                    description: "hello Damien"
                 }
             }
 
-            client.on('join', function(data) {
-                client.emit('posts', JSON.stringify(posts));
-                console.log(data);
-            });
+            client.on( 'join', function( data ) {
+                client.emit( 'posts', JSON.stringify( posts ) );
+                console.log( data );
+            } );
 
-            client.on('blockPost', function(data) {
-                console.log("Post-it blocked!");
+            client.on( 'blockPost', function( data ) {
+                console.log( "Post-it blocked!" );
 
-            })
+            } )
 
-            client.on('messages', function(data) {
-                   client.emit('broad', data);
-                   client.broadcast.emit('broad',data);
-            });
+            client.on( 'messages', function( data ) {
+                client.emit( 'broad', data );
+                client.broadcast.emit( 'broad', data );
+            } );
 
-        });
+        } );
 
     }
 

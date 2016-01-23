@@ -19,13 +19,7 @@ app.factory( 'AppModel', function() {
 
     return {
 
-        posts: [ {
-            title: "test title",
-            description: "test description"
-        }, {
-            title: "test title",
-            description: "test description"
-        } ],
+        posts: {},
 
         currentPost: null
 
@@ -36,6 +30,43 @@ app.factory( 'AppModel', function() {
 app.factory( 'SocketService', function( socketFactory ) {
 
     return socketFactory();
+
+} );
+
+app.controller( 'editorCtrl', function( $scope, AppModel, SocketService ) {
+
+    $scope.model = AppModel;
+
+    $scope.save = function( post ) {
+        if ( post.id ) SocketService.emit( 'update', JSON.stringify( post ) );
+        else SocketService.emit( 'create', JSON.stringify( post ) );
+    };
+
+} );
+
+app.directive( 'editor', function() {
+
+    return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: 'templates/editor/template.html'
+    };
+
+} );
+
+app.factory( 'EditorService', function( $http, AppModel ) {
+
+    return {
+
+        getExample: function() {
+            $http.get( '/api/example' ).then( function( resp ) {
+                AppModel.example = resp.data.example
+            }, function( err ) {
+                console.log( err );
+            } );
+        }
+
+    };
 
 } );
 
@@ -75,38 +106,6 @@ app.factory( 'ExampleService', function( $http, AppModel ) {
 
 } );
 
-app.controller( 'editorCtrl', function( $scope, AppModel, EditorService ) {
-
-    $scope.model = AppModel;
-
-} );
-
-app.directive( 'editor', function() {
-
-    return {
-        restrict: 'E',
-        replace: true,
-        templateUrl: 'templates/editor/template.html'
-    };
-
-} );
-
-app.factory( 'EditorService', function( $http, AppModel ) {
-
-    return {
-
-        getExample: function() {
-            $http.get( '/api/example' ).then( function( resp ) {
-                AppModel.example = resp.data.example
-            }, function( err ) {
-                console.log( err );
-            } );
-        }
-
-    };
-
-} );
-
 app.controller( 'gridCtrl', function( $scope, AppModel, GridService, SocketService ) {
 
     $scope.model = AppModel;
@@ -117,7 +116,13 @@ app.controller( 'gridCtrl', function( $scope, AppModel, GridService, SocketServi
         SocketService.emit( 'join', 'Hello World from client' );
     } );
 
-    $scope.edit = function( post ) {
+    SocketService.on( 'posts', function( data ) {
+        $scope.model.posts = JSON.parse( data );
+    } );
+
+    $scope.edit = function( id, post ) {
+        SocketService.emit( 'blockPost', id );
+        post.id = id;
         $scope.model.currentPost = post;
     };
 
@@ -134,8 +139,6 @@ app.directive( 'grid', function() {
 } );
 
 app.factory( 'GridService', function( $http, AppModel, SocketService ) {
-
-    console.log( SocketService );
 
     return {
 

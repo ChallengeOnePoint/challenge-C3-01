@@ -1,7 +1,7 @@
 <div id="grid" ng-controller="gridCtrl">
-    <div class="post" ng-repeat="post in model.posts">
+    <div class="post" ng-repeat="(id,post) in model.posts">
         {{post.title}}
         {{post.description}}
-        <button ng-click="edit(post)">Edit</button>
+        <button ng-click="edit(id, post)" ng-if="!post.block">Edit</button>
     </div>
 </div>

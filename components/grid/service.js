@@ -1,7 +1,5 @@
 app.factory( 'GridService', function( $http, AppModel, SocketService ) {
 
-    console.log( SocketService );
-
     return {
 
         getExample: function() {

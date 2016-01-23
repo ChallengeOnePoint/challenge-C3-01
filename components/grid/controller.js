@@ -8,7 +8,13 @@ app.controller( 'gridCtrl', function( $scope, AppModel, GridService, SocketServi
         SocketService.emit( 'join', 'Hello World from client' );
     } );
 
-    $scope.edit = function( post ) {
+    SocketService.on( 'posts', function( data ) {
+        $scope.model.posts = JSON.parse( data );
+    } );
+
+    $scope.edit = function( id, post ) {
+        SocketService.emit( 'blockPost', id );
+        post.id = id;
         $scope.model.currentPost = post;
     };
 
