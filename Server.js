@@ -99,8 +99,9 @@ module.exports = class Server {
             } );
 
             client.on( 'delete', function( data ) {
-                console.log("delete");
-                console.log(data)
+                delete posts[data];
+                client.emit( 'posts', JSON.stringify( posts ) );
+                client.broadcast.emit( 'posts', JSON.stringify( posts ) );
             } );
 
 
