@@ -60,8 +60,6 @@ module.exports = class Server {
         io.on( 'connection', function( client ) {
             console.log( 'Client connected...' );
 
-
-
             client.on( 'join', function( data ) {
                 client.emit( 'posts', JSON.stringify( posts ) );
                 console.log( data );
@@ -71,7 +69,13 @@ module.exports = class Server {
                 console.log( "Post-it blocked!" );
                 posts[data].lock = true;
                 client.broadcast.emit( 'blockPost', data );
-            } )
+            } );
+
+            client.on( 'unBlockPost', function( data ) {
+                console.log( "Post-it unblocked!" );
+                posts[data].lock = false;
+                client.broadcast.emit( 'unBlockPost', data );
+            } );
 
             client.on( 'messages', function( data ) {
                 client.emit( 'broad', data );
@@ -81,6 +85,7 @@ module.exports = class Server {
             client.on( 'create', function( data ) {
                 post_counter += 1;
                 posts[post_counter] = JSON.parse(data)
+                client.emit( 'posts', JSON.stringify( posts ) );
                 client.broadcast.emit( 'posts', JSON.stringify( posts ) );
             } );
 
@@ -89,6 +94,7 @@ module.exports = class Server {
                 var id = newData.id;
                 delete newData.id
                 posts[id] = newData
+                client.emit( 'posts', JSON.stringify( posts ) );
                 client.broadcast.emit( 'posts', JSON.stringify( posts ) );
             } );
         } );
