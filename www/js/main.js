@@ -38,10 +38,18 @@ app.controller( 'editorCtrl', function( $scope, AppModel, SocketService ) {
     $scope.model = AppModel;
 
     $scope.save = function() {
-        if ( $scope.model.currentPost.id )
+        if ( $scope.model.currentPost.id ) {
             SocketService.emit( 'update', JSON.stringify( $scope.model.currentPost ) );
-        else
+        } else {
+            $scope.model.currentPost.lock = false;
             SocketService.emit( 'create', JSON.stringify( $scope.model.currentPost ) );
+        }
+        $scope.model.currentPost = null;
+    };
+
+    $scope.cancel = function( id ) {
+        SocketService.emit( 'update', id );
+        $scope.model.posts[ id ].lock = false;
         $scope.model.currentPost = null;
     };
 
@@ -124,15 +132,14 @@ app.controller( 'gridCtrl', function( $scope, AppModel, GridService, SocketServi
     } );
 
     SocketService.on( 'blockPost', function( id ) {
-        console.log( $scope.model.posts[ id ].lock );
         $scope.model.posts[ id ].lock = true;
-        console.log( $scope.model.posts[ id ].lock );
         $scope.$apply();
     } );
 
     $scope.edit = function( id, post ) {
         SocketService.emit( 'blockPost', id );
         post.id = id;
+        post.lock = true;
         $scope.model.currentPost = post;
     };
 
