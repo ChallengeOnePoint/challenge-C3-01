@@ -3,6 +3,6 @@
         <div class="title">{{post.title}}</div>
         <div class="description">{{post.description}}</div>
         <button ng-click="edit(id, post)" ng-show="!post.lock">Edit</button>
-        <button ng-click="delete(id)" ng-show="!post.lock">Delete</button>
+        <button ng-click="delete(id)" class="red" ng-show="!post.lock">Delete</button>
     </div>
 </div>

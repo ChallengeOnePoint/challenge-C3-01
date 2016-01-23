@@ -3,7 +3,8 @@
     <input type="text" ng-model="model.currentPost.title" ng-keyup="keypressUpdate()"/>
     <div>Description</div>
     <input type="text" ng-model="model.currentPost.description" ng-keyup="keypressUpdate()"/>
-    <br/>
-    <button ng-click="save()">Save</button>
-    <button ng-click="cancel(model.currentPost.id)">Cancel</button>
+    <div class="buttons-container">
+        <button ng-click="save()">Save</button>
+        <button ng-click="cancel(model.currentPost.id)" class="red">Cancel</button>
+    </div>
 </div>
