@@ -67,7 +67,8 @@ module.exports = class Server {
 
             client.on( 'blockPost', function( data ) {
                 console.log( "Post-it blocked!" );
-
+                posts[data].lock = true;
+                client.broadcast.emit( 'blockPost', data );
             } )
 
             client.on( 'messages', function( data ) {
