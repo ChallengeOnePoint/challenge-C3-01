@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "^4.13.3",
     "gulp-concat": "^2.6.0",
-    "gulp-less": "^3.0.5"
+    "gulp-less": "^3.0.5",
+    "socket.io": "^1.4.4"
   },
   "scripts": {
     "test": "",
