@@ -74,7 +74,7 @@ module.exports = class Server {
             client.on( 'unBlockPost', function( data ) {
                 console.log( "Post-it unblocked!" );
                 posts[data].lock = false;
-                client.broadcast.emit( 'unBlockPost', data );
+                client.broadcast.emit( 'unBlockPost', JSON.stringify( posts ) );
             } );
 
             client.on( 'messages', function( data ) {
@@ -97,6 +97,13 @@ module.exports = class Server {
                 client.emit( 'posts', JSON.stringify( posts ) );
                 client.broadcast.emit( 'posts', JSON.stringify( posts ) );
             } );
+
+            client.on( 'delete', function( data ) {
+                console.log("delete");
+                console.log(data)
+            } );
+
+
         } );
 
     }
