@@ -2,6 +2,6 @@
     <div class="post" ng-repeat="(id,post) in model.posts">
         {{post.title}}
         {{post.description}}
-        <button ng-click="edit(id, post)" ng-if="!post.block">Edit</button>
+        <button ng-click="edit(id, post)" ng-if="!post.lock">Edit</button>
     </div>
 </div>

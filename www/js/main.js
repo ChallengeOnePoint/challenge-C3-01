@@ -37,9 +37,12 @@ app.controller( 'editorCtrl', function( $scope, AppModel, SocketService ) {
 
     $scope.model = AppModel;
 
-    $scope.save = function( post ) {
-        if ( post.id ) SocketService.emit( 'update', JSON.stringify( post ) );
-        else SocketService.emit( 'create', JSON.stringify( post ) );
+    $scope.save = function() {
+        if ( $scope.model.currentPost.id )
+            SocketService.emit( 'update', JSON.stringify( $scope.model.currentPost ) );
+        else
+            SocketService.emit( 'create', JSON.stringify( $scope.model.currentPost ) );
+        $scope.model.currentPost = null;
     };
 
 } );
@@ -118,6 +121,13 @@ app.controller( 'gridCtrl', function( $scope, AppModel, GridService, SocketServi
 
     SocketService.on( 'posts', function( data ) {
         $scope.model.posts = JSON.parse( data );
+    } );
+
+    SocketService.on( 'blockPost', function( id ) {
+        console.log( $scope.model.posts[ id ].lock );
+        $scope.model.posts[ id ].lock = true;
+        console.log( $scope.model.posts[ id ].lock );
+        $scope.$apply();
     } );
 
     $scope.edit = function( id, post ) {
