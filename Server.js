@@ -42,23 +42,25 @@ module.exports = class Server {
 
     socket() {
 
+        var post_counter = 1;
+
+        var posts = {
+            0: {
+                lock: false,
+                title: "test",
+                description: "hello kelu"
+            },
+            1: {
+                lock: false,
+                title: "test2",
+                description: "hello Damien"
+            }
+        }
+
         io.on( 'connection', function( client ) {
             console.log( 'Client connected...' );
 
-            var post_counter = 2;
 
-            var posts = {
-                0: {
-                    lock: false,
-                    title: "test",
-                    description: "hello kelu"
-                },
-                1: {
-                    lock: false,
-                    title: "test2",
-                    description: "hello Damien"
-                }
-            }
 
             client.on( 'join', function( data ) {
                 client.emit( 'posts', JSON.stringify( posts ) );
@@ -75,6 +77,14 @@ module.exports = class Server {
                 client.emit( 'broad', data );
                 client.broadcast.emit( 'broad', data );
             } );
+
+            client.on( 'create', function( data ) {
+                post_counter += 1;
+                posts[post_counter] = JSON.parse(data)
+                client.emit( 'posts', JSON.stringify( posts ) );
+            } );
+
+
 
         } );
 
