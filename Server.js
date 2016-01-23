@@ -69,7 +69,7 @@ module.exports = class Server {
 
             client.on( 'blockPost', function( data ) {
                 console.log( "Post-it blocked!" );
-                posts[data].lock = true;
+                posts[ data ].lock = true;
                 client.broadcast.emit( 'blockPost', data );
             } )
 
@@ -80,11 +80,9 @@ module.exports = class Server {
 
             client.on( 'create', function( data ) {
                 post_counter += 1;
-                posts[post_counter] = JSON.parse(data)
+                posts[ post_counter ] = JSON.parse( data )
                 client.emit( 'posts', JSON.stringify( posts ) );
             } );
-
-
 
         } );
 

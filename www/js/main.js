@@ -143,6 +143,10 @@ app.controller( 'gridCtrl', function( $scope, AppModel, GridService, SocketServi
         $scope.model.currentPost = post;
     };
 
+    $scope.delete = function( id ) {
+        SocketService.emit( 'delete', id );
+    };
+
 } );
 
 app.directive( 'grid', function() {
