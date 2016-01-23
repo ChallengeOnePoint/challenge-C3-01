@@ -81,7 +81,15 @@ module.exports = class Server {
             client.on( 'create', function( data ) {
                 post_counter += 1;
                 posts[post_counter] = JSON.parse(data)
-                client.emit( 'posts', JSON.stringify( posts ) );
+                client.broadcast.emit( 'posts', JSON.stringify( posts ) );
+            } );
+
+            client.on( 'update', function( data ) {
+                var newData = JSON.parse(data);
+                var id = newData.id;
+                delete newData.id
+                posts[id] = newData
+                client.broadcast.emit( 'posts', JSON.stringify( posts ) );
             } );
 
 
