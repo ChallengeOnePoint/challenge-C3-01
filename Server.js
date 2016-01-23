@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require( 'express' );
+var http = require( 'http' );
 var server;
 var io;
 
@@ -35,7 +36,7 @@ module.exports = class Server {
     }
 
     setServer() {
-        server = require( 'http' ).createServer( this.app );
+        server = http.createServer( this.app );
         io = require( 'socket.io' )( server );
         server.listen( 4200 );
     }
@@ -47,13 +48,13 @@ module.exports = class Server {
         var posts = {
             0: {
                 lock: false,
-                title: "test",
-                description: "hello kelu"
+                title: "Reminder",
+                description: "Learn JS"
             },
             1: {
                 lock: false,
-                title: "test2",
-                description: "hello Damien"
+                title: "Reminder 2",
+                description: "Learn JS ++"
             }
         }
 
