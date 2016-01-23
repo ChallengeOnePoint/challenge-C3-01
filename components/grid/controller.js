@@ -9,7 +9,15 @@ app.controller( 'gridCtrl', function( $scope, AppModel, GridService, SocketServi
     } );
 
     SocketService.on( 'posts', function( data ) {
-        $scope.model.posts = JSON.parse( data );
+        var newPosts = JSON.parse( data ),
+            counter = Object.keys( $scope.model.posts ).length,
+            newCounter = Object.keys( newPosts ).length;
+
+        if ( newCounter < counter && counter > 0 )
+            var notification = new Notification( "A post has been deleted" );
+        if ( newCounter > counter && counter > 0 )
+            var notification = new Notification( "A post has been created" );
+        $scope.model.posts = newPosts;
         $scope.$apply();
     } );
 
@@ -22,11 +30,18 @@ app.controller( 'gridCtrl', function( $scope, AppModel, GridService, SocketServi
         SocketService.emit( 'blockPost', id );
         post.id = id;
         post.lock = true;
+        $scope.model.cancelBackup = angular.copy( post );
         $scope.model.currentPost = post;
     };
 
     $scope.delete = function( id ) {
         SocketService.emit( 'delete', id );
     };
+
+    Notification.requestPermission( function( permission ) {
+
+        Notification.permission = permission;
+
+    } );
 
 } );

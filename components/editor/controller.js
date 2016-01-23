@@ -13,9 +13,18 @@ app.controller( 'editorCtrl', function( $scope, AppModel, SocketService ) {
     };
 
     $scope.cancel = function( id ) {
-        SocketService.emit( 'update', id );
-        $scope.model.posts[ id ].lock = false;
+        $scope.model.currentPost.lock = false;
+        $scope.model.cancelBackup.lock = false;
+        $scope.model.currentPost = $scope.model.cancelBackup;
+        $scope.save();
         $scope.model.currentPost = null;
+        SocketService.emit( 'unBlockPost', id );
+    };
+
+    $scope.keypressUpdate = function() {
+        if ( $scope.model.currentPost.id ) {
+            SocketService.emit( 'update', JSON.stringify( $scope.model.currentPost ) );
+        }
     };
 
 } );
