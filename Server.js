@@ -45,9 +45,30 @@ module.exports = class Server {
         io.on('connection', function(client) {  
             console.log('Client connected...');
 
+            var post_counter = 2;
+
+            var posts = {
+                0: { 
+                    lock: false,
+                    title: "test",
+                    data: "hello kelu"
+                },
+                1: { 
+                    lock: false,
+                    title: "test2",
+                    data: "hello Damien"
+                }
+            }
+
             client.on('join', function(data) {
+                client.emit('posts', JSON.stringify(posts));
                 console.log(data);
             });
+
+            client.on('blockPost', function(data) {
+                console.log("Post-it blocked!");
+
+            })
 
             client.on('messages', function(data) {
                    client.emit('broad', data);
