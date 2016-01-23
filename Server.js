@@ -91,9 +91,6 @@ module.exports = class Server {
                 posts[id] = newData
                 client.broadcast.emit( 'posts', JSON.stringify( posts ) );
             } );
-
-
-
         } );
 
     }

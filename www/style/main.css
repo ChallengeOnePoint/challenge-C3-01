@@ -127,6 +127,22 @@ a img {
   border: 1px solid #CCCCCC;
   margin: 10px;
 }
+#grid .post .title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 0 5px 0;
+  padding: 0 0 5px 0;
+  border-bottom: 1px solid #CCCCCC;
+  text-transform: uppercase;
+}
+#grid .post .description {
+  font-size: 14px;
+  color: #666666;
+  margin: 0 0 5px 0;
+}
+#grid .post.locked {
+  opacity: 0.5;
+}
 #editor {
   background: #EEEEEE;
   position: absolute;

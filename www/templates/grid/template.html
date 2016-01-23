@@ -1,7 +1,8 @@
 <div id="grid" ng-controller="gridCtrl">
-    <div class="post" ng-repeat="(id,post) in model.posts">
-        {{post.title}}
-        {{post.description}}
-        <button ng-click="edit(id, post)" ng-if="!post.lock">Edit</button>
+    <div class="post" ng-class="{'locked':post.lock}" ng-repeat="(id,post) in model.posts">
+        <div class="title">{{post.title}}</div>
+        <div class="description">{{post.description}}</div>
+        <button ng-click="edit(id, post)" ng-show="!post.lock">Edit</button>
+        <button ng-click="delete(id)" ng-show="!post.lock">Delete</button>
     </div>
 </div>

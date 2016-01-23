@@ -13,16 +13,19 @@ app.controller( 'gridCtrl', function( $scope, AppModel, GridService, SocketServi
     } );
 
     SocketService.on( 'blockPost', function( id ) {
-        console.log( $scope.model.posts[ id ].lock );
         $scope.model.posts[ id ].lock = true;
-        console.log( $scope.model.posts[ id ].lock );
         $scope.$apply();
     } );
 
     $scope.edit = function( id, post ) {
         SocketService.emit( 'blockPost', id );
         post.id = id;
+        post.lock = true;
         $scope.model.currentPost = post;
+    };
+
+    $scope.delete = function( id ) {
+        SocketService.emit( 'delete', id );
     };
 
 } );
