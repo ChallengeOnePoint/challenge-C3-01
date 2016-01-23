@@ -19,6 +19,7 @@ gulp.task( 'js', function() {
     return gulp.src( [
         './core/app.js',
         './core/AppModel.js',
+        './core/SocketService.js',
         './components/**/*.js'
     ] ).pipe(
         gulp_concat( 'main.js' )

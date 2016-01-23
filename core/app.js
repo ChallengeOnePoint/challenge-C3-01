@@ -1,11 +1,9 @@
-var app = angular.module( 'Application', [ 'ngRoute' ] );
+var app = angular.module( 'Application', [ 'ngRoute', 'btford.socket-io' ] );
 
 app.config( function( $routeProvider, $locationProvider ) {
 
     $routeProvider.when( '/', {
         templateUrl: 'templates/home.html'
-    } ).when( '/example', {
-        templateUrl: 'templates/example.html'
     } ).otherwise( {
         redirectTo: '/'
     } );
