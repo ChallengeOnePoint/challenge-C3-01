@@ -1,11 +1,15 @@
 'use strict';
 
 var express = require( 'express' );
+var server;
+var io;
 
 module.exports = class Server {
 
     constructor( opt ) {
         this.setApp();
+        this.setServer();
+        this.socket()
         this.setStaticFolder();
         this.setRoute();
         this.app.listen( opt.port );
@@ -28,6 +32,30 @@ module.exports = class Server {
         } ).get( '/*', function( req, res ) {
             res.sendFile( __dirname + '/www/index.html' );
         } );
+    }
+
+    setServer() {
+        server = require('http').createServer(this.app);  
+        io = require('socket.io')(server);
+        server.listen(4200); 
+    }
+
+    socket() {
+
+        io.on('connection', function(client) {  
+            console.log('Client connected...');
+
+            client.on('join', function(data) {
+                console.log(data);
+            });
+
+            client.on('messages', function(data) {
+                   client.emit('broad', data);
+                   client.broadcast.emit('broad',data);
+            });
+
+        });
+
     }
 
 };
