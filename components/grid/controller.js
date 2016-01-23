@@ -10,6 +10,7 @@ app.controller( 'gridCtrl', function( $scope, AppModel, GridService, SocketServi
 
     SocketService.on( 'posts', function( data ) {
         $scope.model.posts = JSON.parse( data );
+        $scope.$apply();
     } );
 
     SocketService.on( 'blockPost', function( id ) {
